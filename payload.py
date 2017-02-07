@@ -204,6 +204,7 @@ class Push(Payload):
             msg.append("\n")
             msg.append(ctext)
         return "".join(msg)
+
 class Wiki(Payload):
     def __init__(self, data):
         Payload.__init__(self, data)
@@ -226,4 +227,15 @@ class Wiki(Payload):
             msg.append("\n")
             msg.append(ctext)
         return "".join(msg)
+
+class PullRequestReview(Payload):
+    def __init__(self, data):
+        Payload.__init__(self, data)
+
+    def reviewed(self):
+        state  = self.data['review']['state']
+        number = self.data['pull_request']['number']
+        title  = self.data['pull_request']['title']
+        url    = self.data['pull_request']['html_url']
+        return "%s %s pull request[#%s %s](%s) at %s:" % (self.user_link(), state, number, title, url, self.repo_link())
 

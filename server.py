@@ -7,7 +7,7 @@ import config
 import hmac
 import hashlib
 
-from payload import PullRequest, PullRequestComment, Issue, IssueComment, Repository, Branch, Push, Tag, CommitComment, Wiki
+from payload import PullRequest, PullRequestComment, Issue, IssueComment, Repository, Branch, Push, Tag, CommitComment, Wiki, PullRequestReview
 
 app = Flask(__name__)
 
@@ -75,6 +75,8 @@ def root():
             msg = CommitComment(data).created()
     elif event == "gollum":
         msg = Wiki(data).updated()
+    elif event == "pull_request_review":
+        msg = PullRequestReview(data).reviewed()
 
     if msg:
         hook_info = get_hook_info(data)
